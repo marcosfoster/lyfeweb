@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="LYFE" Class="LYFEDB_DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=MARCOS\SQLEXPRESS;Initial Catalog=LYFE;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="LYFEConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.INGREDIENTS" Member="INGREDIENTs">
+    <Type Name="INGREDIENT">
+      <Column Name="I_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="QUANTITY" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="QUANTITY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="INGREDIENT_INGREDIENTS_PRICE" Member="INGREDIENTS_PRICEs" ThisKey="I_ID" OtherKey="I_ID" Type="INGREDIENTS_PRICE" />
+      <Association Name="INGREDIENT_LIST_INGREDIENT" Member="LIST_INGREDIENTs" ThisKey="I_ID" OtherKey="I_ID" Type="LIST_INGREDIENT" />
+      <Association Name="INGREDIENT_RECIPE_INGREDIENT" Member="RECIPE_INGREDIENTs" ThisKey="I_ID" OtherKey="I_ID" Type="RECIPE_INGREDIENT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.INGREDIENTS_PRICE" Member="INGREDIENTS_PRICEs">
+    <Type Name="INGREDIENTS_PRICE">
+      <Column Name="I_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PRICE" Type="System.Decimal" DbType="SmallMoney NOT NULL" CanBeNull="false" />
+      <Column Name="STORE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="INGREDIENT_INGREDIENTS_PRICE" Member="INGREDIENT" ThisKey="I_ID" OtherKey="I_ID" Type="INGREDIENT" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RECIPE_TAGS" Member="RECIPE_TAGs">
+    <Type Name="RECIPE_TAG">
+      <Column Name="R_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TAG" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="RECIPE_RECIPE_TAG" Member="RECIPE" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RECIPES" Member="RECIPEs">
+    <Type Name="RECIPE">
+      <Column Name="R_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="METHOD" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SERVES" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="PREPTIME" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="PICTURE_LOCATION" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="RECIPE_RECIPE_TAG" Member="RECIPE_TAGs" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE_TAG" />
+      <Association Name="RECIPE_RECIPE_INGREDIENT" Member="RECIPE_INGREDIENTs" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE_INGREDIENT" />
+      <Association Name="RECIPE_RECIPE_STEP" Member="RECIPE_STEPs" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE_STEP" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LIST_INGREDIENTS" Member="LIST_INGREDIENTs">
+    <Type Name="LIST_INGREDIENT">
+      <Column Name="S_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="I_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="I_QUANTITY" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="INGREDIENT_LIST_INGREDIENT" Member="INGREDIENT" ThisKey="I_ID" OtherKey="I_ID" Type="INGREDIENT" IsForeignKey="true" />
+      <Association Name="SHOPPING_LIST_LIST_INGREDIENT" Member="SHOPPING_LIST" ThisKey="S_ID" OtherKey="S_ID" Type="SHOPPING_LIST" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SHOPPING_LISTS" Member="SHOPPING_LISTs">
+    <Type Name="SHOPPING_LIST">
+      <Column Name="S_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="S_NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CREATE_DATE" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="SHOPPING_LIST_LIST_INGREDIENT" Member="LIST_INGREDIENTs" ThisKey="S_ID" OtherKey="S_ID" Type="LIST_INGREDIENT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RECIPE_INGREDIENTS" Member="RECIPE_INGREDIENTs">
+    <Type Name="RECIPE_INGREDIENT">
+      <Column Name="R_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="I_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="QUANTITY" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="INGREDIENT_RECIPE_INGREDIENT" Member="INGREDIENT" ThisKey="I_ID" OtherKey="I_ID" Type="INGREDIENT" IsForeignKey="true" />
+      <Association Name="RECIPE_RECIPE_INGREDIENT" Member="RECIPE" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RECIPE_STEPS" Member="RECIPE_STEPs">
+    <Type Name="RECIPE_STEP">
+      <Column Name="R_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="STEP_ID" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="STEP_TEXT" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="RECIPE_RECIPE_STEP" Member="RECIPE" ThisKey="R_ID" OtherKey="R_ID" Type="RECIPE" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
